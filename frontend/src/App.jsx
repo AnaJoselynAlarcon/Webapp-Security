@@ -1,28 +1,31 @@
-import React from 'react';
-
-import './App.css';
-import Login from './Login';
-import Fact from './Fact';
-import Logout from './Logout';
+import React, { useState } from "react";
+import "./App.css";
+import LoginForm from "./LoginForm";
+import ChuckNorris from "./ChuckNorris";
 
 function App() {
-    const [token, setToken] = React.useState('');
+  const [token, setToken] = useState("");
 
-    //define a function onToken
-    function handleToken(token) {
-        setToken(token);
-    }
-    
+  // Function to handle logout
+  function handleLogout() {
+    // Clear the token
+    setToken("");
+  }
 
-    return (
-        <div className="app">
-            {/* Display login form if token is not set. */}
-            
-
-            {/* Display fact and logout if token is set. */}
-            {token ? <Fact token={token}/> : <Login onToken={handleToken} />}
-        </div>
-    );
+  return (
+    <div className="app">
+      {/* Display login form if token is not set. */}
+      {/* Display fact, logout button, if token is set. */}
+      {token ? (
+        <>
+          <ChuckNorris token={token} />
+          <button onClick={handleLogout}>Logout</button>
+        </>
+      ) : (
+        <LoginForm onToken={setToken} />
+      )}
+    </div>
+  );
 }
 
 export default App;
