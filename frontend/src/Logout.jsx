@@ -1,36 +1,36 @@
-import React from 'react';
+import React from "react";
 
-function Logout({ }) {
-	const handleLogout = async (e) => {
-		e.preventDefault();
+function Logout({ token }) {
+  const handleLogout = async (e) => {
+    e.preventDefault();
 
-		// Send request to /logout API endpoint
+    try {
+      const token = localStorage.getItem("token");
 
+      // Send request to /logout API endpoint
+      const response = await fetch("http://localhost:3333/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-		// Call onLogout with API message as input.
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-		// Parent App component needs to notified that logout has occurred.
-	};
+      const data = await response.json();
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
-	const performLogout = async () => {
-		// app.post('/logout', (req, res) => {
-		// 	const token = req.header('Authorization').replace('Bearer ', '');
-	
-		// 	delete sessions[token];
-	
-		// 	res.status(200);
-		// 	res.json({ message: 'You have been logged out.' });
-		// });
-		
-	}
-
-	return (
-		<>
-			<button onClick={handleLogout}>
-				Logout
-			</button>
-		</>
-	);
+  return (
+    <>
+      <button onClick={handleLogout}>Logout</button>
+    </>
+  );
 }
 
 export default Logout;
