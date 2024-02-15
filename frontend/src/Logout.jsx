@@ -1,13 +1,10 @@
 import React from "react";
 
-function Logout({ token }) {
+function Logout({ token, setToken }) {
   const handleLogout = async (e) => {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem("token");
-
-      // Send request to /logout API endpoint
       const response = await fetch("http://localhost:3333/logout", {
         method: "POST",
         headers: {
@@ -20,7 +17,9 @@ function Logout({ token }) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const data = await response.json();
+      await response.json();
+
+      setToken("");
     } catch (error) {
       console.error("Error logging out:", error);
     }

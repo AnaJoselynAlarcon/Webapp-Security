@@ -1,42 +1,52 @@
 import React from "react";
-import Logout from "./Logout";
 
 function ChuckNorris({ token }) {
   const [fact, setFact] = React.useState("");
   const [loading, setLoading] = React.useState(false);
 
   const getFact = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
-      const response = await fetch("http://localhost:3333/fact", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      setTimeout(async () => {
+        const response = await fetch("http://localhost:3333/fact", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      const fact = data.fact;
+        const fact = data.fact;
 
-      setFact(fact);
+        setFact(fact);
+        setLoading(false);
+      }, 1000);
     } catch (error) {
       console.error("Error fetching Chuck Norris fact:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   React.useEffect(() => {
-    // Fetch fact when component is first mounted
     if (token) {
       getFact();
     }
-  }, [token]); // Run the effect whenever token changes
+  }, [token]);
 
+  const fetchAnotherFact = () => {
+    setFact("");
+    getFact();
+  };
+
+  const fontColor = "#000000";
   return (
     <>
       <h1>Fact</h1>
-      {loading ? <div className="spinner"></div> : <p>{fact}</p>}
+      {loading ? (
+        <div className="spinner" />
+      ) : (
+        <p style={{ color: fontColor }}>{fact}</p>
+      )}
+      <button onClick={fetchAnotherFact}>Fetch Another Fact</button>
     </>
   );
 }

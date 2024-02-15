@@ -2,24 +2,17 @@ import React, { useState } from "react";
 import "./App.css";
 import LoginForm from "./LoginForm";
 import ChuckNorris from "./ChuckNorris";
+import Logout from "./Logout";
 
 function App() {
   const [token, setToken] = useState("");
 
-  // Function to handle logout
-  function handleLogout() {
-    // Clear the token
-    setToken("");
-  }
-
   return (
     <div className="app">
-      {/* Display login form if token is not set. */}
-      {/* Display fact, logout button, if token is set. */}
       {token ? (
         <>
           <ChuckNorris token={token} />
-          <button onClick={handleLogout}>Logout</button>
+          <Logout token={token} setToken={setToken} />
         </>
       ) : (
         <LoginForm onToken={setToken} />
